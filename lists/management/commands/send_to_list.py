@@ -17,18 +17,19 @@ class Command(BaseCommand):
           raise CommandError('No mailing list by this name "%s"' % list_email)
 
         # read content from stdin
-        raw_msg = self.stdin.readlines()
+        raw_mail = self.stdin.readlines()
 
-        from email import message_to_string
-        msg = message_from_string(raw_msg.join());
+        from mailparser import parse_from_string
+	mail = parse_from_string(raw_mail)
 
-        to = msg['to']
+        to = mail.to
         if to != list_email:
           self.stdout.write(self.style.DANGER('Destination mismatch, to: "%s" vs. list_email: "%s"' % to, list_email))
 
-        from = msg['from']
-        subject = msg['subject']
-        body = msg['body']
+        from 		= mail.from
+        subject 	= mail.subject
+        body 		= mail.body
+        attachments 	= mail.attachments
 
         ok = send_email(to,from,subject,body)
         if ok: self.stdout.write(self.style.SUCCESS('Successfully send message to "%s"' % list_email))

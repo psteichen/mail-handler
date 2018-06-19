@@ -1,0 +1,3 @@
+django>=
+mail-parser
+#django-anymail
