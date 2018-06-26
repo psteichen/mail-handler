@@ -25,12 +25,12 @@ class Command(BaseCommand):
     except List.DoesNotExist:
       raise CommandError('No mailing list by this name "%s"' % To)
 
-    From 	= mail.from_
-    Subject 	= mail.subject
-    Body 	= mail.body
+    From 	= str(mail.from_)
+    Subject 	= str(mail.subject)
+    Body 	= str(mail.body)
     Attachments	= mail.attachments
 
-    ok = send_email(To,From,Subject,Body)
+    ok = send_email(To,From,Subject,Body,Attachemnts)
     if ok: self.stdout.write(self.style.SUCCESS('Successfully send message to "%s"' % list_email))
     else: self.stdout.write(self.style.DANGER('Error in sending message to "%s"' % list_email))
 
